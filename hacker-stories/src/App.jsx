@@ -21,8 +21,10 @@ const App = () =>  {
     },
   ];
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   const handleSearch = (event) => {
-    console.log(event.target.value)
+    setSearchTerm(event.target.value)
   }  
 
   return (
@@ -30,28 +32,22 @@ const App = () =>  {
       <h1>My Hacker Stories</h1>
 
       <Search onSearch={handleSearch}/>
-      <List list={stories}/>
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
+      <List list={stories.filter(story => story.title.toLowerCase().startsWith(searchTerm.toLowerCase()))}/>
     </div>
   )};
 
+
 const Search = (props) => {
-  const [searchTerm, setSearchTerm] = React.useState('');
-
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value)
-
-    props.onSearch(event);
-  }
-
   return(
     <div>
       <label htmlFor='search'>Search: </label>
-      <input id='search' type='text' onChange={handleChange}/>
-      <p>
-        Searching for <strong>{searchTerm} </strong>
-      </p>
+      <input id='search' type='text' onChange={props.onSearch}/>
     </div>    
   )};
+
 
 const List = (props) => {
   return (
@@ -75,7 +71,7 @@ const Item = (props) => {
 )};
 
 Search.propTypes = {
-  onSearch: PropTypes.function.isRequired,
+  onSearch: PropTypes.func,
 }
 List.propTypes = {
   list: PropTypes.arrayOf(
