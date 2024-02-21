@@ -20,20 +20,27 @@ const App = () =>  {
       objectID: 1,
     },
   ];
+
+  const handleSearch = (event) => {
+    console.log(event.target.value)
+  }  
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search />
+      <Search onSearch={handleSearch}/>
       <List list={stories}/>
     </div>
   )};
 
-const Search = () => {
+const Search = (props) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value)
+
+    props.onSearch(event);
   }
 
   return(
@@ -67,7 +74,9 @@ const Item = (props) => {
   </li>
 )};
 
-
+Search.propTypes = {
+  onSearch: PropTypes.function.isRequired,
+}
 List.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
@@ -91,4 +100,6 @@ Item.propTypes = {
     objectID: PropTypes.number.isRequired,
   }).isRequired,
 };
+
+
 export default App
