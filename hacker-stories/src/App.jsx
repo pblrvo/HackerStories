@@ -21,7 +21,7 @@ const App = () =>  {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('React');
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value)
@@ -35,41 +35,38 @@ const App = () =>  {
       <h1>My Hacker Stories</h1>
 
       <Search search={searchTerm} onSearch={handleSearch}/>
-      <p>
-        Searching for <strong>{searchTerm}</strong>
-      </p>
       <List list={searchedStories}/>
     </div>
   )};
 
 
-const Search = (props) => {
+const Search = ({search, onSearch}) => {
   return(
     <div>
       <label htmlFor='search'>Search: </label>
-      <input id='search' type='text' onChange={props.onSearch} value={props.search}/>
+      <input id='search' type='text' value={search} onChange={onSearch} />
     </div>    
   )};
 
 
-const List = (props) => {
+const List = ({list}) => {
   return (
     <ul>
-      {props.list.map((item) => (
-        <Item key={item.objectID} item={item}/>)
+      {list.map(({objectID, ...item}) => (
+        <Item key={objectID} {...item} />)
       )}
     </ul>
 )};
 
-const Item = (props) => {
+const Item = ({url, title, author, num_comments, points}) => {
   return (
   <li>
     <span>
-    <a href={props.item.url}>{props.item.title}</a>
+    <a href={url}>{title}</a>
     </span><br />
-    <span>Author: {props.item.author}</span><br />
-    <span>Number of comments: {props.item.num_comments}</span><br />
-    <span>Points: {props.item.points}</span><br />
+    <span>Author: {author}</span><br />
+    <span>Number of comments: {num_comments}</span><br />
+    <span>Points: {points}</span><br />
   </li>
 )};
 
@@ -91,14 +88,12 @@ List.propTypes = {
 };
 
 Item.propTypes = {
-  item: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    num_comments: PropTypes.number.isRequired,
-    points: PropTypes.number.isRequired,
-    objectID: PropTypes.number.isRequired,
-  }).isRequired,
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  num_comments: PropTypes.number.isRequired,
+  points: PropTypes.number.isRequired,
+  objectID: PropTypes.number,
 };
 
 
