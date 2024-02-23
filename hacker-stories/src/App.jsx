@@ -21,11 +21,17 @@ const App = () =>  {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState(localStorage.search || '');
+  const useStorageState = (key, initialState) =>{
+    const [value, setValue] = React.useState(localStorage.getItem(key) || initialState);
 
-  React.useEffect(() => {
-    localStorage.setItem('search', searchTerm)
-  }, [searchTerm]);
+    React.useEffect(() => {
+      localStorage.setItem(key, value)
+    }, [value, key]);
+
+    return [value, setValue];
+  };
+
+  const [searchTerm, setSearchTerm] = useStorageState('search', localStorage.search || '');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value)
@@ -42,7 +48,6 @@ const App = () =>  {
       <List list={searchedStories}/>
     </div>
   )};
-
 
 const Search = ({search, onSearch}) => {
   return(
