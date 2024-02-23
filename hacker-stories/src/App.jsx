@@ -44,15 +44,15 @@ const App = () =>  {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <InputWithLabel id="search" label="Search: " type="text" value={searchTerm} onInputChange={handleSearch}/>
+      <InputWithLabel id="search" type="text" value={searchTerm} onInputChange={handleSearch}>Search: </InputWithLabel>
       <List list={searchedStories}/>
     </div>
   )};
 
-const InputWithLabel = ({id, label, type='text', value, onInputChange}) => {
+const InputWithLabel = ({id, type='text', value, onInputChange, children,}) => {
   return(
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{children}</label>
       <input id={id} type={type} value={value} onChange={onInputChange} />
     </>    
   )};
@@ -81,10 +81,11 @@ const Item = ({url, title, author, num_comments, points}) => {
 
 InputWithLabel.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string.isRequired,
   value: PropTypes.string,
   onInputChange: PropTypes.func,
+  children: PropTypes.node,
 }
 List.propTypes = {
   list: PropTypes.arrayOf(
