@@ -55,8 +55,7 @@ const App = () =>  {
     data: [], isLoading: false, isError: false
   });
 
-
-  React.useEffect(() => {
+  const handleFetchStories = React.useCallback(() => {
     console.log('useEffect called with searchTerm:', searchTerm);
     if (!searchTerm) return;
 
@@ -86,6 +85,12 @@ const App = () =>  {
     }
     );
   }, [searchTerm]);
+
+  React.useEffect(() =>{
+    handleFetchStories();
+  
+  }
+, [handleFetchStories]);
 
   const handleRemoveStory = (objectID) => {
     dispatchStories({
